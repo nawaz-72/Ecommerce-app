@@ -28,16 +28,16 @@ exports.getSingleProduct = catchAsyncFunc(async (req, res, next) => {
 });
 
 //get all products
-exports.getAllProducts = catchAsyncFunc(async (req, res) => {
+exports.getAllProducts = catchAsyncFunc(async (req, res, next) => {
   const resultPerPage = 5;
-  const productCount = Product.countDocuments();
-  const apifeature = new APIfeatures(Product.find(), req.query)
+  //const productCount = await Product.countDocuments();
+  const apifeature = await new APIfeatures(Product.find(), req.query)
     .search()
     .filter()
     .pagination(resultPerPage);
 
   const product = await apifeature.query;
-  res.status(200).json({ success: true, product, productCount });
+  res.status(200).json({ success: true, product });
 });
 
 //update product -- Admin
